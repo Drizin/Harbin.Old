@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using AdventureWorksDB = AdventureWorks.Business.Entities.AdventureWorksDB;
 
 namespace AdventureWorks.Business.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class UnitTest1
     {
-        [TestMethod]
+        [Test]
         public void TestMethod1()
         {
             var db = new AdventureWorksDB();
@@ -22,7 +22,7 @@ namespace AdventureWorks.Business.Tests
             Assert.AreEqual(person.BusinessEntityId, person2.BusinessEntityId);
         }
 
-        [TestMethod]
+        [Test]
         public void TestInsert1()
         {
             var db = new AdventureWorksDB();
