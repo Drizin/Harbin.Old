@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Harbin.Common</name>
+    </assembly>
+    <members>
+        <member name="M:Harbin.Common.Database.DataException.WrapSqlException(System.Data.SqlClient.SqlException,System.String,System.Object)">
+            <summary>
+            Wraps the SqlException, add contextual information (SqlQuery, parameter values), and then you should rethrow (do not swallow/ignore exceptions)
+            According to the SQL error code, we can create a more meaningful message (parsing information from the DB error), which can later be translated by i18n
+            </summary>
+            <param name="ex"></param>
+        </member>
+        <member name="T:Harbin.Common.Queries.EFExpressions">
+            <summary>
+            Linq Expressions that can be directly translated to Entity Framework
+            </summary>
+        </member>
+        <member name="M:Harbin.Common.Queries.EFExpressions.CreateNotInExpression``2(System.Reflection.PropertyInfo,System.Collections.Generic.ICollection{``1})">
+            <summary>
+            Generates a NOT IN (!list.Contains(value)) Expression, which translates into SQL for Entity Framework
+            </summary>
+        </member>
+        <member name="M:Harbin.Common.Queries.EFExpressions.CreateNotInExpression``2(System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Collections.Generic.ICollection{``1})">
+            <summary>
+            Generates a NOT IN (!list.Contains(value)) Expression, which translates into SQL for Entity Framework
+            </summary>
+        </member>
+        <member name="M:Harbin.Common.Queries.EFExpressions.CreateInExpression``2(System.Reflection.PropertyInfo,System.Collections.Generic.ICollection{``1})">
+            <summary>
+            Generates a IN (list.Contains(value)) Expression, which translates into SQL for Entity Framework
+            </summary>
+        </member>
+        <member name="M:Harbin.Common.Queries.EFExpressions.CreateInExpression``2(System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Collections.Generic.ICollection{``1})">
+            <summary>
+            Generates a IN (list.Contains(value)) Expression, which translates into SQL for Entity Framework
+            </summary>
+        </member>
+        <member name="T:Harbin.Common.Queries.IQueryableFilterExtensions">
+            <summary>
+            Extensions that can be used to filter IQueryable{T} using Linq Expressions that can be translated into SQL.
+            Should extend IQueryable{Entity} (and return same type), since they are FILTER methods that can be combined with other filters.
+            </summary>
+        </member>
+        <member name="M:Harbin.Common.Queries.IQueryableFilterExtensions.WherePropertyIn``2(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Collections.Generic.ICollection{``1})">
+            <summary>
+            Filters by the Property value. Filter records in which property IS IN the given LIST
+            Sample usage: contacts.Contains(x => x.ContactTypeID, new List{int}() { 1, 2, 3 } )
+            </summary>
+            <typeparam name="E">Entity type which being filtered</typeparam>
+            <typeparam name="U">Underlying type</typeparam>
+            <param name="entities">Entities to filter</param>
+            <param name="propertySelector">Property which value should be contained in list</param>
+            <param name="values">List of possible values</param>
+            <returns></returns>
+        </member>
+        <member name="M:Harbin.Common.Queries.IQueryableFilterExtensions.WherePropertyNotIn``2(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Collections.Generic.ICollection{``1})">
+            <summary>
+            Filters by the Property value. Filter records in which property is NOT IN the given LIST
+            Sample usage: contacts.Contains(x => x.ContactTypeID, new List{int}() { 1, 3 } )
+            </summary>
+            <typeparam name="E">Entity type which being filtered</typeparam>
+            <typeparam name="U">Underlying type</typeparam>
+            <param name="propertySelector">Property which value should be contained in list</param>
+            <param name="values">List of possible values</param>
+            <param name="entities">Entities to filter</param>
+            <returns></returns>
+        </member>
+        <member name="T:Harbin.Common.Queries.IQueryableFindExtensions">
+            <summary>
+            Extensions that can be used to FIND an element from a DbSet{Entity} using Linq Expressions that can be translated into SQL.
+            Should extend DbSet{Entity} and return Entity, since they return a single instance or null (use Single or SingleOrDefault accordingly)
+            </summary>
+        </member>
+    </members>
+</doc>

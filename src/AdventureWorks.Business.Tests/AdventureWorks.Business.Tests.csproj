@@ -60,6 +60,7 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GenericQueryExtensionsTests.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -71,6 +72,10 @@
     <ProjectReference Include="..\AdventureWorks.Business\AdventureWorks.Business.csproj">
       <Project>{cfd58b50-284e-42be-8484-7d6573602f90}</Project>
       <Name>AdventureWorks.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Harbin.Common\Harbin.Common.csproj">
+      <Project>{c0de56f4-e532-4d77-9352-1561ae53c252}</Project>
+      <Name>Harbin.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
