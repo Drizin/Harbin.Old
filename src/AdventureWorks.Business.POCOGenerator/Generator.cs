@@ -49,15 +49,15 @@ namespace AdventureWorks.Business.POCOGenerator
             // A course for this generator is available on Pluralsight at https://www.pluralsight.com/courses/code-first-entity-framework-legacy-databases
 
             // Main settings **********************************************************************************************************************
-            Settings.ConnectionStringName = "MyDbContext";   // Searches for this connection string in config files listed below in the ConfigFilenameSearchOrder setting
+            Settings.ConnectionStringName = "AdventureWorks";   // Searches for this connection string in config files listed below in the ConfigFilenameSearchOrder setting
                                                              // ConnectionStringName is the only required setting.
             Settings.CommandTimeout = 600; // SQL Command timeout in seconds. 600 is 10 minutes, 0 will wait indefinately. Some databases can be slow retrieving schema information.
                                            // As an alternative to ConnectionStringName above, which must match your app/web.config connection string name, you can override them below
                                            // Settings.ConnectionString = "Data Source=(local);Initial Catalog=Northwind;Integrated Security=True;Application Name=EntityFramework Reverse POCO Generator";
                                            // Settings.ProviderName = "System.Data.SqlClient";
 
-            Settings.Namespace = "EF6POCOGenerator.SampleOutput"; // Override the default namespace here
-            Settings.DbContextName = "MyDbContext"; // Note: If generating separate files, please give the db context a different name from this tt filename.
+            Settings.Namespace = "AdventureWorks.Business.Entities"; // Override the default namespace here
+            Settings.DbContextName = "AdventureWorksDB"; // Note: If generating separate files, please give the db context a different name from this tt filename.
                                                     //Settings.DbContextInterfaceName = "IMyDbContext"; // Defaults to "I" + DbContextName or set string empty to not implement any interface.
             Settings.DbContextInterfaceBaseClasses = "System.IDisposable";    // Specify what the base classes are for your database context interface
             Settings.DbContextBaseClass = "System.Data.Entity.DbContext";   // Specify what the base class is for your DbContext. For ASP.NET Identity use "Microsoft.AspNet.Identity.EntityFramework.IdentityDbContext<Microsoft.AspNet.Identity.EntityFramework.IdentityUser>";
@@ -66,10 +66,10 @@ namespace AdventureWorks.Business.POCOGenerator
             Settings.ConfigurationClassName = "Configuration"; // Configuration, Mapping, Map, etc. This is appended to the Poco class name to configure the mappings.
             Settings.FilenameSearchOrder = new[] { "app.config", "web.config" }; // Add more here if required. The config files are searched for in the local project first, then the whole solution second.
 
-            Settings.EntityClassesModifiers = "public"; // "public partial";
-            Settings.ConfigurationClassesModifiers = "public"; // "public partial";
-            Settings.DbContextClassModifiers = "public"; // "public partial";
-            Settings.DbContextInterfaceModifiers = "public"; // "public partial";
+            Settings.EntityClassesModifiers = "public partial"; // "public partial";
+            Settings.ConfigurationClassesModifiers = "public partial"; // "public partial";
+            Settings.DbContextClassModifiers = "public partial"; // "public partial";
+            Settings.DbContextInterfaceModifiers = "public partial"; // "public partial";
             Settings.MigrationClassModifiers = "internal sealed";
             Settings.ResultClassModifiers = "public"; // "public partial";
             Settings.UseMappingTables = true; // If true, mapping will be used and no mapping tables will be generated. If false, all tables will be generated.
@@ -204,7 +204,7 @@ namespace AdventureWorks.Business.POCOGenerator
             // If there are multiple schemas, then the table name is prefixed with the schema, except for dbo.
             // Ie. dbo.hello will be Hello.
             //     abc.hello will be AbcHello.
-            Settings.PrependSchemaName = true;   // Control if the schema name is prepended to the table name
+            Settings.PrependSchemaName = false;   // Control if the schema name is prepended to the table name
 
             // Table Suffix ***********************************************************************************************************************
             // Prepends the suffix to the generated classes names
@@ -346,6 +346,25 @@ namespace AdventureWorks.Business.POCOGenerator
                 //    column.OverrideModifier = true;
                 // This will create: public override long id { get; set; }
 
+                // Remove ID column from Concrete classes as it will be inherited from a base class 
+                if (column.IsPrimaryKey && column.IsForeignKey)
+                {
+                    if (table.Name == "EmailAddress" ||
+                    table.Name == "Employee" ||
+                    table.Name == "Password" ||
+                    table.Name == "Person" ||
+                    table.Name == "SalesPerson" ||
+                    table.Name == "Store" ||
+                    table.Name == "Vendor")
+                        column.Hidden = true;
+                }
+                // All tables derived from [Person].[BusinessEntity] will also have these row-level attributes, no need to map those in parent table
+                if (table.NameHumanCase == "BusinessEntity")
+                {
+                    if (column.NameHumanCase == "Rowguid" || column.NameHumanCase == "ModifiedDate")
+                        column.Hidden = true;
+                }
+
                 // Perform Enum property type replacement
                 var enumDefinition = Settings.EnumDefinitions.FirstOrDefault(e =>
                     (e.Schema.Equals(table.Schema, StringComparison.InvariantCultureIgnoreCase)) &&
@@ -482,6 +501,18 @@ namespace AdventureWorks.Business.POCOGenerator
                     t.Columns.Any(x => !x.IsPrimaryKey && !x.IsNullable && x.NameHumanCase.Equals("UserId", StringComparison.InvariantCultureIgnoreCase) && x.PropertyType == "long"));
                 return r.ToString();
                 */
+
+                // Writes base classes
+                if (t.ClassName == "EmailAddress" ||
+                    t.ClassName == "Employee" ||
+                    t.ClassName == "Password" ||
+                    t.ClassName == "Person" ||
+                    t.ClassName == "SalesPerson" ||
+                    t.ClassName == "Store" ||
+                    t.ClassName == "Vendor")
+                    return " : BusinessEntity";
+
+
                 return "";
             };
 
@@ -538,6 +569,17 @@ namespace AdventureWorks.Business.POCOGenerator
 
                 // You can also change the access modifier of the foreign-key's navigation property:
                 // if(fk.PkTableName == "Categories") fk.AccessModifier = "internal";
+
+                //Remove navigation property to the base class as it already inherit 
+                if (fk.FkColumn == "BusinessEntityID" && (
+                    fk.FkTableName == "EmailAddress" ||
+                    fk.FkTableName == "Employee" ||
+                    fk.FkTableName == "Password" ||
+                    fk.FkTableName == "Person" ||
+                    fk.FkTableName == "SalesPerson" ||
+                    fk.FkTableName == "Store" ||
+                    fk.FkTableName == "Vendor"))
+                    return null;
 
                 return fk;
             };
@@ -618,6 +660,13 @@ namespace AdventureWorks.Business.POCOGenerator
                             fkName = parts[2];
                     }
                 }*/
+
+                // [Person].[BusinessEntityContacts] points to [Person].[BusinessEntity] by [BusinessEntityId] but also points to [Person].[Person] by [PersonId]
+                // We have to adjust the ForeignKey name to avoid name collision (Person.BusinessEntityContacts vs BusinessEntity.BusinessEntityContacts)
+                if (tableName == "BusinessEntityContacts" && foreignKey.FkColumn == "PersonID")
+                    return "PersonBusinessEntityContacts";
+                if (tableName == "BusinessEntityContacts" && foreignKey.FkColumn == "BusinessEntityID")
+                    return "BusinessEntityContacts";
 
                 return fkName;
             };
@@ -2242,7 +2291,7 @@ namespace AdventureWorks.Business.POCOGenerator
                         }
                     }
 
-                    using (var sqlConnection = (System.Data.SqlClient.SqlConnection)_createConnection())
+                    using (var sqlConnection = (System.Data.SqlClient.SqlConnection) _createConnection())
                     {
                         foreach (var proc in storedProcs)
                             reader.ReadStoredProcReturnObject(sqlConnection, proc);

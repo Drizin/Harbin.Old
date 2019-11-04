@@ -120,7 +120,11 @@ namespace AdventureWorks.Business.POCOGenerator
 
         private string WrapIfNullable(string propType, Column col)
         {
-            if (!col.IsNullable2())
+            if (col.IsPrimaryKey && (col.PropertyType == "int" || col.PropertyType == "long"))
+            {
+                // numeric PKs should be nullable because we'll use null keys as a convention for "in-memory" (not persisted yet) objects
+            }
+            else if (!col.IsNullable2())
                 return propType;
             return string.Format(Settings.NullableShortHand ? "{0}?" : "System.Nullable<{0}>", propType);
         }
