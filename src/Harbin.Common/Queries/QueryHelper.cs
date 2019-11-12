@@ -7,11 +7,11 @@ using System.Text;
 namespace Harbin.Common.Queries
 {
     /// <summary>
-    /// Linq Expressions that can be directly translated to Entity Framework
+    /// LINQ Expressions that can be directly translated to Entity Framework
     /// </summary>
-    public class EFExpressions
+    public class QueryHelper
     {
-        //TODO: cache these expressions (are they expensive?)
+        //TODO: cache these expressions? (are they expensive?)
         #region Expressions
         /// <summary>
         /// Generates a NOT IN (!list.Contains(value)) Expression, which translates into SQL for Entity Framework
