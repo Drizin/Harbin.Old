@@ -7,7 +7,7 @@ using System.Text;
 namespace Harbin.Common.Queries
 {
     /// <summary>
-    /// Extensions that can be used to filter IQueryable{T} using Linq Expressions that can be translated into SQL.
+    /// Extensions that can be used to filter IQueryable{T} using LINQ Expressions that can be translated into SQL.
     /// Should extend IQueryable{Entity} (and return same type), since they are FILTER methods that can be combined with other filters.
     /// </summary>
     public static class IQueryableFilterExtensions
@@ -29,7 +29,7 @@ namespace Harbin.Common.Queries
         public static IQueryable<E> WherePropertyIn<E, U>(this IQueryable<E> entities, Expression<Func<E, U>> propertySelector, ICollection<U> values)
         {
             var property = (System.Reflection.PropertyInfo)((MemberExpression)propertySelector.Body).Member;
-            var expression = EFExpressions.CreateInExpression<E, U>(property, values);
+            var expression = QueryHelper.CreateInExpression<E, U>(property, values);
             return entities.Where(expression);
         }
 
@@ -46,7 +46,7 @@ namespace Harbin.Common.Queries
         public static IQueryable<E> WherePropertyNotIn<E, U>(this IQueryable<E> entities, Expression<Func<E, U>> propertySelector, ICollection<U> values)
         {
             var property = (System.Reflection.PropertyInfo)((MemberExpression)propertySelector.Body).Member;
-            var expression = EFExpressions.CreateNotInExpression<E, U>(property, values);
+            var expression = QueryHelper.CreateNotInExpression<E, U>(property, values);
             return entities.Where(expression);
         }
 
