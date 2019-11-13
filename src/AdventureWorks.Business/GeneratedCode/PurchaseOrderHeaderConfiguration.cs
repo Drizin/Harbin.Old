@@ -43,8 +43,8 @@ namespace AdventureWorks.Business.Entities
             Property(x => x.ModifiedDate).HasColumnName(@"ModifiedDate").HasColumnType("datetime").IsRequired();
 
             // Foreign keys
+            HasRequired(a => a._shipMethod).WithMany(b => b.PurchaseOrderHeaders).HasForeignKey(c => c.ShipMethodId).WillCascadeOnDelete(false); // FK_PurchaseOrderHeader_ShipMethod_ShipMethodID
             HasRequired(a => a.Employee).WithMany(b => b.PurchaseOrderHeaders).HasForeignKey(c => c.EmployeeId).WillCascadeOnDelete(false); // FK_PurchaseOrderHeader_Employee_EmployeeID
-            HasRequired(a => a.ShipMethod).WithMany(b => b.PurchaseOrderHeaders).HasForeignKey(c => c.ShipMethodId).WillCascadeOnDelete(false); // FK_PurchaseOrderHeader_ShipMethod_ShipMethodID
             HasRequired(a => a.Vendor).WithMany(b => b.PurchaseOrderHeaders).HasForeignKey(c => c.VendorId).WillCascadeOnDelete(false); // FK_PurchaseOrderHeader_Vendor_VendorID
             InitializePartial();
         }

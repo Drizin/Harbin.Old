@@ -58,7 +58,7 @@ namespace AdventureWorks.Business.Entities
         /// <summary>
         /// Parent ContactType pointed by [BusinessEntityContact].([ContactTypeId]) (FK_BusinessEntityContact_ContactType_ContactTypeID)
         /// </summary>
-        public virtual ContactType ContactType { get; set; } // FK_BusinessEntityContact_ContactType_ContactTypeID
+        public virtual ContactType _contactType { get; set; } // FK_BusinessEntityContact_ContactType_ContactTypeID
 
         /// <summary>
         /// Parent Person pointed by [BusinessEntityContact].([PersonId]) (FK_BusinessEntityContact_Person_PersonID)

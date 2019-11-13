@@ -79,9 +79,9 @@ namespace AdventureWorks.Business.Entities
         /// <summary>
         ///  Return a sequence of dynamic objects      <para /> 
         ///  Example:
-        ///  var students = DB.Query("SELECT * FROM Students");
-        ///  foreach(var student in students) Response.WriteLine(student.FirstName);  <para /> 
-        ///  var enrollments = DB.Query("SELECT * FROM Enrollments WHERE StudentIndex=@sid", new { sid = 1 } );  etc..
+        ///  var people = DB.Query("SELECT * FROM Person.Person");
+        ///  foreach(var person in people) Response.WriteLine(person.FirstName);  <para /> 
+        ///  var employees = DB.Query("SELECT * FROM HumanResources.Employee WHERE JobTitle=@jobTitle", new { jobTitle = "Chief Executive Officer" } );  etc..
         /// </summary>
         public IEnumerable<dynamic> Query(string sql, object parms = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = default(int?), CommandType? commandType = default(CommandType?))
         {

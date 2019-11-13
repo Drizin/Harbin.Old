@@ -668,6 +668,13 @@ namespace AdventureWorks.Business.POCOGenerator
                 if (tableName == "BusinessEntityContacts" && foreignKey.FkColumn == "BusinessEntityID")
                     return "BusinessEntityContacts";
 
+                // since we want "ContactType" as SmartEnum, name "ContactType" will be reserved for class "BusinessEntityContact"
+                if (tableName == "ContactType" && foreignKey.FkColumn == "ContactTypeID") 
+                    return "_contactType";
+                // since we want "ShipMethodEnum" as SmartEnum , name "ShipMethod" will be reserved for classes "SalesOrderHeader" and "PurchaseOrderHeader"
+                if (tableName == "ShipMethod" && foreignKey.FkColumn == "ShipMethodID")
+                    return "_shipMethod";
+
                 return fkName;
             };
 

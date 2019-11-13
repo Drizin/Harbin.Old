@@ -60,9 +60,9 @@ namespace AdventureWorks.Business.Entities
             HasOptional(a => a.CurrencyRate).WithMany(b => b.SalesOrderHeaders).HasForeignKey(c => c.CurrencyRateId).WillCascadeOnDelete(false); // FK_SalesOrderHeader_CurrencyRate_CurrencyRateID
             HasOptional(a => a.SalesPerson).WithMany(b => b.SalesOrderHeaders).HasForeignKey(c => c.SalesPersonId).WillCascadeOnDelete(false); // FK_SalesOrderHeader_SalesPerson_SalesPersonID
             HasOptional(a => a.SalesTerritory).WithMany(b => b.SalesOrderHeaders).HasForeignKey(c => c.TerritoryId).WillCascadeOnDelete(false); // FK_SalesOrderHeader_SalesTerritory_TerritoryID
+            HasRequired(a => a._shipMethod).WithMany(b => b.SalesOrderHeaders).HasForeignKey(c => c.ShipMethodId).WillCascadeOnDelete(false); // FK_SalesOrderHeader_ShipMethod_ShipMethodID
             HasRequired(a => a.BillToAddress).WithMany(b => b.SalesOrderHeaders_BillToAddressId).HasForeignKey(c => c.BillToAddressId).WillCascadeOnDelete(false); // FK_SalesOrderHeader_Address_BillToAddressID
             HasRequired(a => a.Customer).WithMany(b => b.SalesOrderHeaders).HasForeignKey(c => c.CustomerId).WillCascadeOnDelete(false); // FK_SalesOrderHeader_Customer_CustomerID
-            HasRequired(a => a.ShipMethod).WithMany(b => b.SalesOrderHeaders).HasForeignKey(c => c.ShipMethodId).WillCascadeOnDelete(false); // FK_SalesOrderHeader_ShipMethod_ShipMethodID
             HasRequired(a => a.ShipToAddress).WithMany(b => b.SalesOrderHeaders_ShipToAddressId).HasForeignKey(c => c.ShipToAddressId).WillCascadeOnDelete(false); // FK_SalesOrderHeader_Address_ShipToAddressID
             InitializePartial();
         }

@@ -35,8 +35,8 @@ namespace AdventureWorks.Business.Entities
             Property(x => x.ModifiedDate).HasColumnName(@"ModifiedDate").HasColumnType("datetime").IsRequired();
 
             // Foreign keys
+            HasRequired(a => a._contactType).WithMany(b => b.BusinessEntityContacts).HasForeignKey(c => c.ContactTypeId).WillCascadeOnDelete(false); // FK_BusinessEntityContact_ContactType_ContactTypeID
             HasRequired(a => a.BusinessEntity).WithMany(b => b.BusinessEntityContacts).HasForeignKey(c => c.BusinessEntityId).WillCascadeOnDelete(false); // FK_BusinessEntityContact_BusinessEntity_BusinessEntityID
-            HasRequired(a => a.ContactType).WithMany(b => b.BusinessEntityContacts).HasForeignKey(c => c.ContactTypeId).WillCascadeOnDelete(false); // FK_BusinessEntityContact_ContactType_ContactTypeID
             HasRequired(a => a.Person).WithMany(b => b.PersonBusinessEntityContacts).HasForeignKey(c => c.PersonId).WillCascadeOnDelete(false); // FK_BusinessEntityContact_Person_PersonID
             InitializePartial();
         }

@@ -206,7 +206,7 @@ namespace AdventureWorks.Business.Entities
         /// <summary>
         /// Parent ShipMethod pointed by [SalesOrderHeader].([ShipMethodId]) (FK_SalesOrderHeader_ShipMethod_ShipMethodID)
         /// </summary>
-        public virtual ShipMethod ShipMethod { get; set; } // FK_SalesOrderHeader_ShipMethod_ShipMethodID
+        public virtual ShipMethod _shipMethod { get; set; } // FK_SalesOrderHeader_ShipMethod_ShipMethodID
 
         public SalesOrderHeader()
         {
