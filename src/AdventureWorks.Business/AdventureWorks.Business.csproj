@@ -54,6 +54,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Compile Include="Entities\SalesOrderHeaderQueryExtensions.cs" />
+    <Compile Include="Enums\ContactTypeEnum.cs" />
+    <Compile Include="Enums\ShipMethodEnum.cs" />
     <Compile Include="GeneratedCode\IAdventureWorksDB.cs" />
     <Compile Include="GeneratedCode\AdventureWorksDB.cs" />
     <Compile Include="GeneratedCode\AdventureWorksDBFactory.cs" />
