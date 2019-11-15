@@ -13,6 +13,24 @@ namespace AdventureWorks.Business.Tests
     [TestFixture]
     public class EFQueryTests
     {
+        [Test(Description = "Type-Safe-Enum filtering")]
+        public void FilterTSE0()
+        {
+            var db = new AdventureWorksDB();
+
+            // Filtering by a not-mapped property is not supported (can't be passed to SQL)
+            Assert.Throws<NotSupportedException>(() =>
+            {
+                var orders = db.SalesOrderHeaders.Where(order => order.ShipMethod == ShipMethodEnum.CARGO_TRANSPORT_5).ToList();
+            });
+
+            // But filtering with WhereEnum we can find the underlying property (int) and build a expression which can be passed to SQL
+            Assert.DoesNotThrow(() =>
+            {
+                var orders = db.SalesOrderHeaders.WhereEnum<SalesOrderHeader, ShipMethodEnum, int>(order => order.ShipMethod, shipMethod => shipMethod == ShipMethodEnum.CARGO_TRANSPORT_5).ToList();
+            });
+        }
+
         [Test(Description = "Filter table by filtering single Type-Safe-Enum")]
         public void FilterTSE1()
         {
