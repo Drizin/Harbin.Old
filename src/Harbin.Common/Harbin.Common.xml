@@ -11,6 +11,45 @@
             </summary>
             <param name="ex"></param>
         </member>
+        <member name="T:Harbin.Common.BaseMethodResult`1">
+            <summary>
+            Returns the result of a method that does NOT output any entity, but may or may not return SUCCESS
+            If your method doesn't return anything, just use void, no need to use MethodResult
+            </summary>
+            <typeparam name="R"></typeparam>
+        </member>
+        <member name="P:Harbin.Common.BaseMethodResult`1.LastException">
+            <summary>
+            Returns the Last occurred Exception, if any. 
+            Only used if we're swallowing (ignoring) exceptions intentionally.
+            Please note that expected errors should NOT be returned as exceptions, but rather as enums.
+            </summary>
+        </member>
+        <member name="T:Harbin.Common.ResultCodeEnum">
+            <summary>
+            Generic enum for operations which return either Success or Error.
+            </summary>
+        </member>
+        <member name="T:Harbin.Common.MethodResult`1">
+            <summary>
+            Returns the result of a method that does NOT output any entity
+            </summary>
+            <typeparam name="R"></typeparam>
+        </member>
+        <member name="T:Harbin.Common.MethodResult`2">
+            <summary>
+            Returns the result of a method that DOES output entity of type T
+            </summary>
+            <typeparam name="R"></typeparam>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:Harbin.Common.MethodListResult`2">
+            <summary>
+            Returns the result of a method that outputs a LIST of entities of type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="R"></typeparam>
+        </member>
         <member name="M:Harbin.Common.General.ReflectionHelper.IsSubclassOfGeneric(System.Type,System.Type)">
             <summary>
             Checks if type "toCheck" is subclass of generic type "generic".

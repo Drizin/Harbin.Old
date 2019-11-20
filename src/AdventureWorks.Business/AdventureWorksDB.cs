@@ -139,5 +139,41 @@ namespace AdventureWorks.Business.Entities
 
     }
 
+    partial interface IAdventureWorksDB
+    {
+        int Execute(string sql, object parms = null, IDbTransaction transaction = null, int? commandTimeout = default(int?), CommandType? commandType = default(CommandType?));
+        IEnumerable<T> Query<T>(string sql, object parms = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = default(int?), CommandType? commandType = default(CommandType?));
+        IEnumerable<dynamic> Query(string sql, object parms = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = default(int?), CommandType? commandType = default(CommandType?));
+        int Insert(string sql, object parms, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = default(int?), CommandType? commandType = default(CommandType?));
+        int Update(string sql, object parms, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = default(int?), CommandType? commandType = default(CommandType?));
+    }
+    partial class FakeAdventureWorksDB
+    {
+        public int Execute(string sql, object parms = null, IDbTransaction transaction = null, int? commandTimeout = default(int?), CommandType? commandType = default(CommandType?))
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<T> Query<T>(string sql, object parms = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = default(int?), CommandType? commandType = default(CommandType?))
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<dynamic> Query(string sql, object parms = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = default(int?), CommandType? commandType = default(CommandType?))
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Insert(string sql, object parms, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = default(int?), CommandType? commandType = default(CommandType?))
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Update(string sql, object parms, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = default(int?), CommandType? commandType = default(CommandType?))
+        {
+            throw new NotImplementedException();
+        }
+
+    }
 
 }

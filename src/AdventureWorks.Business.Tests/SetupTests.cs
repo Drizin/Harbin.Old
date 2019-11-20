@@ -8,11 +8,17 @@ using System.Threading.Tasks;
 namespace AdventureWorks.Business.Tests
 {
     [SetUpFixture]
-    class SetupTests
+    public class SetupTests
     {
+        [OneTimeSetUp]
         public void Setup()
         {
+            Logging.SetupLog();
+            resolver = new DependencyResolver();
             Harbin.Common.TypeSafeEnums.TypeSafeDapper.RegisterDapperConverters(typeof(AdventureWorks.Business.Entities.Person).Assembly);
         }
+
+        public static DependencyResolver resolver;
+
     }
 }
