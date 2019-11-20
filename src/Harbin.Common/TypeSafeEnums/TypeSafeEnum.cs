@@ -8,6 +8,10 @@ using System.Text;
 
 namespace Harbin.Common.TypeSafeEnums
 {
+    // TODO: Replace by other popular TypeSafeEnum library?
+    // https://github.com/HeadspringLabs/Enumeration
+    // https://github.com/ardalis/SmartEnum
+    // https://ardalis.com/listing-strongly-typed-enum-options-in-c
 
     #region TypeSafeEnum<TSE, U>
     /// <summary>
@@ -21,6 +25,7 @@ namespace Harbin.Common.TypeSafeEnums
     /// If each enum value has a different class then should use the common superclass (e.g. both AccountingManagerContactTypeEnum and AssistantSalesAgentContactTypeEnum should use ContactTypeEnum as <typeparamref name="TSE"/>)</typeparam>
     public abstract class TypeSafeEnum<TSE, U>
         where TSE : TypeSafeEnum<TSE, U>
+        where U : IEquatable<U>, IComparable<U>
     {
         static TypeSafeEnum()
         {
@@ -86,6 +91,15 @@ namespace Harbin.Common.TypeSafeEnums
         {
             return !(a == b);
         }
+
+        public static implicit operator U(TypeSafeEnum<TSE, U> smartEnum) =>
+            smartEnum.Key;
+
+        public static explicit operator TypeSafeEnum<TSE, U>(U value) =>
+            FromKey(value);
+
+        public virtual int CompareTo(TypeSafeEnum<TSE, U> other) =>
+            Key.CompareTo(other.Key);
 
         public override bool Equals(object obj)
         {

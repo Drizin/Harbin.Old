@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace Harbin.Common.TypeSafeEnums
     {
         public static void RegisterDapperConverters(Assembly assembly)
         {
+            Log.Verbose("RegisterDapperConverters({0})", assembly.FullName);
             var typeSafeEnums = assembly.GetTopLevelTypeSafeEnums().ToList(); // TypeSafeEnums except their derived subtypes
 
             foreach (var typeSafeEnum in typeSafeEnums)
@@ -27,8 +29,11 @@ namespace Harbin.Common.TypeSafeEnums
             if (!TypeSafeEnumHelper.IsTopLevelTypeSafeEnum(typeSafeEnumType))
                 throw new Exception("RegisterDapperConverter should be used only for TypeSafeEnum types");
 
+            Log.Verbose("RegisterDapperConverter({0})", typeSafeEnumType.FullName);
+
+
             //Dapper.SqlMapper.AddTypeHandler(new TypeSafeEnumDapperConverter<ContactTypeEnum, int>());
-           var keyType = typeSafeEnumType.BaseType.GetGenericArguments()[1];
+            var keyType = typeSafeEnumType.BaseType.GetGenericArguments()[1];
 
             var gt = typeof(TypeSafeEnumDapperConverter<,>);
             var makeme = gt.MakeGenericType(new Type[] { typeSafeEnumType, keyType });
@@ -51,6 +56,7 @@ namespace Harbin.Common.TypeSafeEnums
         /// <typeparam name="U"></typeparam>
         protected class TypeSafeEnumDapperConverter<TSE, U> : Dapper.SqlMapper.TypeHandler<TSE>
             where TSE : TypeSafeEnum<TSE, U>
+            where U : IEquatable<U>, IComparable<U>
         {
             public override TSE Parse(object value)
             {

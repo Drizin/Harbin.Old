@@ -15,6 +15,7 @@ namespace Harbin.Common.TypeSafeEnums
         public static Expression<Func<E, bool>> CreateInExpression<E, TSE, U>(Expression<Func<E, TSE>> propertySelector, ICollection<TSE> values)
             where E : class //IEntity?
             where TSE : TypeSafeEnum<TSE, U>
+            where U : IEquatable<U>, IComparable<U>
         {
             //var entityUnderlyingPropertyName = TypeSafeEnum<S, U>.UnderlyingPropertyName<E>(propertySelector);
             //var entityUnderlyingProperty = typeof(E).GetProperties().Where(x => x.Name == entityUnderlyingPropertyName).SingleOrDefault();
@@ -32,6 +33,7 @@ namespace Harbin.Common.TypeSafeEnums
         public static Expression<Func<E, bool>> CreateNotInExpression<E, TSE, U>(Expression<Func<E, TSE>> propertySelector, ICollection<TSE> values)
             where E : class //IEntity?
             where TSE : TypeSafeEnum<TSE, U>
+            where U : IEquatable<U>, IComparable<U>
         {
             var entityUnderlyingProperty = TypeSafeEnum<TSE, U>.UnderlyingProperty<E>(propertySelector);
             var propertyType = ((System.Reflection.PropertyInfo)((MemberExpression)propertySelector.Body).Member).PropertyType;
@@ -48,6 +50,7 @@ namespace Harbin.Common.TypeSafeEnums
         public static Expression<Func<E, bool>> CreateExpression<E, TSE, U>(Expression<Func<E, TSE>> propertySelector, Func<TSE, bool> predicate)
             where E : class //IEntity?
             where TSE : TypeSafeEnum<TSE, U>
+            where U : IEquatable<U>, IComparable<U>
         {
             var entityUnderlyingProperty = TypeSafeEnum<TSE, U>.UnderlyingProperty<E>(propertySelector);
             var propertyType = ((System.Reflection.PropertyInfo)((MemberExpression)propertySelector.Body).Member).PropertyType;
@@ -70,6 +73,7 @@ namespace Harbin.Common.TypeSafeEnums
         public static Expression<Func<E, TSE>> Unwrap<E, TSE, U>(Expression<Func<E, TypeSafeEnum<TSE, U>>> propertySelector)
             where E : class //IEntity?
             where TSE : TypeSafeEnum<TSE, U>
+            where U : IEquatable<U>, IComparable<U>
         {
             // Converting (E => TypeSafeEnum<TSE,U>) to (E => TSE). //http://stackoverflow.com/a/27463773/3606250
             var memberName = ((MemberExpression)propertySelector.Body).Member.Name;

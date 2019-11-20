@@ -27,6 +27,7 @@ namespace Harbin.Common.TypeSafeEnums
         public static IQueryable<E> WhereEnumIn<E, TSE, U>(this IQueryable<E> entities, Expression<Func<E, TSE>> entityPropertySelector, ICollection<TSE> values)
             where E : class //IEntity?
             where TSE : TypeSafeEnum<TSE, U>
+            where U : IEquatable<U>, IComparable<U>
         {
             var expression = TypeSafeEnumsQueryHelper.CreateInExpression<E, TSE, U>(entityPropertySelector, values);
             return entities.Where(expression);
@@ -45,6 +46,7 @@ namespace Harbin.Common.TypeSafeEnums
         public static IQueryable<E> WhereEnumNotIn<E, TSE, U>(this IQueryable<E> entities, Expression<Func<E, TSE>> entityPropertySelector, ICollection<TSE> values)
             where E : class //IEntity?
             where TSE : TypeSafeEnum<TSE, U>
+            where U : IEquatable<U>, IComparable<U>
         {
             var expression = TypeSafeEnumsQueryHelper.CreateNotInExpression<E, TSE, U>(entityPropertySelector, values);
             return entities.Where(expression);
@@ -63,6 +65,7 @@ namespace Harbin.Common.TypeSafeEnums
         public static IQueryable<E> WhereEnum<E, TSE, U>(this IQueryable<E> entities, Expression<Func<E, TypeSafeEnum<TSE, U>>> entityPropertySelector, Func<TSE, bool> predicate)
             where E : class //IEntity?
             where TSE : TypeSafeEnum<TSE, U>
+            where U : IEquatable<U>, IComparable<U>
         {
             var entityPropertySelector2 = TypeSafeEnumsQueryHelper.Unwrap(entityPropertySelector);
             var expression = TypeSafeEnumsQueryHelper.CreateExpression<E, TSE, U>(entityPropertySelector2, predicate);
